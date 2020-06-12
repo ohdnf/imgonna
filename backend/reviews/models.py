@@ -1,8 +1,8 @@
 from django.db import models
-from movies.models import Movie
 from django.conf import settings
+from movies.models import Movie
 
-def Review(models.Model):
+class Review(models.Model):
     title = models.CharField(max_length=100)
     content = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
@@ -11,9 +11,9 @@ def Review(models.Model):
                              on_delete=models.CASCADE, related_name='reviews')
     movie = models.ForeignKey(Movie, on_delete=models.CASCADE, related_name='reviews')
 
-def ReviewComment(models.Model):
+class ReviewComment(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL,
-                             on_delete=models.CASCADE, related_name='reviews')
+                             on_delete=models.CASCADE, related_name='reviews_comments')
     review = models.ForeignKey(Review, on_delete=models.CASCADE, related_name='review_comments')
     content = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
