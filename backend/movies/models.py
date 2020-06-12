@@ -19,3 +19,9 @@ class Movie(models.Model):
     poster_path = models.CharField(max_length=1000)
     backdrop_path = models.CharField(max_length=1000)
     genres = models.ManyToManyField(Genre, related_name='movies')
+
+class Rating(models.Model):
+    movie = models.ForeignKey(Movie, related_name='ratings')
+    user = models.ForeignKey(settings.AUTH_USER_MODEL,
+                             on_delete=models.CASCADE, related_name='ratings')
+    score = models.FloatField()
