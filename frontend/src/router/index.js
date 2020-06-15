@@ -5,8 +5,10 @@ import Home from '../views/Home.vue'
 import LoginView from '../views/accounts/LoginView.vue'
 import SignupView from '../views/accounts/SignupView.vue'
 
-import CreateView from '../views/articles/CreateView.vue'
-import ListView from '../views/articles/ListView.vue'
+import ArticleCreateView from '../views/articles/ArticleCreateView.vue'
+import ArticleListView from '../views/articles/ArticleListView.vue'
+
+import MovieListView from '../views/movies/MovieListView.vue'
 
 Vue.use(VueRouter)
 
@@ -28,8 +30,8 @@ Vue.use(VueRouter)
   },
   {
     path: '/articles/create',
-    name: 'Create',
-    component: CreateView,
+    name: 'ArticleCreate',
+    component: ArticleCreateView,
     // beforeEnter(from, to, next) {
     //   console.log(from, to)
     //   if (!Vue.$cookies.isKey('auth-token')) {
@@ -41,9 +43,14 @@ Vue.use(VueRouter)
   },
   {
     path: '/articles',
-    name: 'List',
-    component: ListView,
-  }
+    name: 'ArticleList',
+    component: ArticleListView,
+  },
+  {
+    path: '/movies',
+    name: 'MovieList',
+    component: MovieListView,
+  },
 ]
 
 const router = new VueRouter({

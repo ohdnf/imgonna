@@ -2,10 +2,11 @@
   <div id="app">
     <div id="nav">
       <router-link to="/">Home</router-link> |
-      <router-link :to="{ name: 'List' }">Articles</router-link> |
+      <router-link :to="{ name: 'ArticleList' }">Articles</router-link> |
+      <router-link :to="{ name: 'MovieList' }">Movies</router-link> |
       <router-link v-if="!isLoggedIn" :to="{ name: 'Login' }">Login</router-link> | 
       <router-link v-if="!isLoggedIn" :to="{ name: 'Signup' }">Signup</router-link>
-      <router-link v-if="isLoggedIn" :to="{ name: 'Create' }">New Article</router-link> |
+      <router-link v-if="isLoggedIn" :to="{ name: 'ArticleCreate' }">New Article</router-link> |
       <router-link v-if="isLoggedIn" to="/accounts/logout" @click.native="logout" >Logout</router-link>
       <div>
         {{ errorMessages }}
@@ -28,7 +29,7 @@ export default {
       errorMessages: null,
     }
   },
-  
+
   methods: {
     setCookie(token) {
       this.$cookies.set('auth-token', token)
@@ -48,6 +49,7 @@ export default {
       axios.post(SERVER_URL + '/rest-auth/login/', loginData)
         .then(res => {
           this.setCookie(res.data.key)
+          console.log(res)
           this.$router.push({ name: 'Home' })
         })
         .catch(err => this.errorMessages = err.response.data)
@@ -56,7 +58,7 @@ export default {
     logout() {
       const config = {
         headers: {
-          'Authorization': `JWT ${this.$cookies.get('auth-token')}`
+          'Authorization': `Token ${this.$cookies.get('auth-token')}`
         }
       }
 
@@ -68,7 +70,7 @@ export default {
           this.isLoggedIn = false
           this.$router.push({ name: 'Home' })
         })
-    },
+    }
   },
   mounted() {
     // cookie 에 auth-token 이 존재하는가 체크

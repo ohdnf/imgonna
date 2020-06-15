@@ -15,7 +15,7 @@ import axios from "axios";
 const SERVER_URL = "http://localhost:8000";
 
 export default {
-  name: "ListView",
+  name: "ArticleListView",
   data() {
     return {
       articles: []
@@ -26,7 +26,7 @@ export default {
       axios.get(SERVER_URL + "/articles/")
         .then(res => this.articles = res.data)
         .catch(err => console.error(err))
-    },
+    }
   },
   created() {
     this.fetchArticles()

@@ -21,7 +21,7 @@ import axios from 'axios'
 const SERVER_URL = 'http://localhost:8000'
 
 export default {
-  name: "CreateView",
+  name: "ArticleCreateView",
   data() {
     return {
       articleData: {
@@ -34,7 +34,7 @@ export default {
     createArticle() {
       const config = {
         headers: {
-          Authorization: `JWT ${this.$cookies.get('auth-token')}`
+          Authorization: `Token ${this.$cookies.get('auth-token')}`
         }
       }
       // article 생성은 Header: Token / Body: { title: , content: }
