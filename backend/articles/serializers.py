@@ -12,8 +12,8 @@ class ArticleListSerializer(serializers.ModelSerializer):
 
 
 class ArticleSerializer(serializers.ModelSerializer):
-    user = UserSerializer(required=False)
-    created_at = serializers.DateTimeField(format="%Y-%m-%d %H:%M:%S")
+    user = UserSerializer(required=False)   # is_valid()에서 필수여부 검증 PASS
+    created_at = serializers.DateTimeField(format="%Y-%m-%d %H:%M:%S", required=False)
 
     class Meta:
         model = Article
