@@ -1,28 +1,21 @@
 <template>
   <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link :to="{ name: 'ArticleList' }">Articles</router-link> |
-      <router-link :to="{ name: 'MovieList' }">Movies</router-link> |
-      <router-link v-if="!isLoggedIn" :to="{ name: 'Login' }">Login</router-link> | 
-      <router-link v-if="!isLoggedIn" :to="{ name: 'Signup' }">Signup</router-link>
-      <router-link v-if="isLoggedIn" :to="{ name: 'ArticleCreate' }">New Article</router-link> |
-      <router-link v-if="isLoggedIn" to="/accounts/logout" @click.native="logout" >Logout</router-link>
-      <div>
-        {{ errorMessages }}
-      </div>
-    </div>
+    <NavBar :isLoggedIn="isLoggedIn" @logout="logout"/>
     <router-view @submit-login-data="login" @submit-signup-data="signup"/>
   </div>
 </template>
 
 <script>
 import axios from 'axios'
-// axios.post(URL, BODY, HEADER)
+import NavBar from '@/components/NavBar.vue'
+
 const SERVER_URL = 'http://localhost:8000'
 
 export default {
   name: 'App',
+  components: {
+    NavBar
+  },
   data() {
     return {
       isLoggedIn: false,
@@ -68,8 +61,11 @@ export default {
         .finally(() => {
           this.$cookies.remove('auth-token')
           this.isLoggedIn = false
-          this.$router.push({ name: 'Home' })
+          console.log(this.$router.currentRoute)
         })
+        if (this.$router.currentRoute.name !== 'Home') {
+          this.$router.push({ name: 'Home' })
+        }
     }
   },
   mounted() {
