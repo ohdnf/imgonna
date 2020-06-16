@@ -1,6 +1,7 @@
 <template>
   <div id="app">
     <NavBar :isLoggedIn="isLoggedIn" @logout="logout"/>
+    <SearchBar @input-change="onInputChange"/>
     <router-view class="container mt-4" @submit-login-data="login" @submit-signup-data="signup"/>
   </div>
 </template>
@@ -8,18 +9,22 @@
 <script>
 import axios from 'axios'
 import NavBar from '@/components/NavBar.vue'
+import SearchBar from '@/components/SearchBar.vue'
 
 const SERVER_URL = 'http://localhost:8000'
 
 export default {
   name: 'App',
   components: {
-    NavBar
+    NavBar,
+    SearchBar
   },
   data() {
     return {
       isLoggedIn: false,
       errorMessages: null,
+      inputValue: '',
+      movies: null,
     }
   },
 
@@ -66,6 +71,26 @@ export default {
         if (this.$router.currentRoute.name !== 'Home') {
           this.$router.push({ name: 'Home' })
         }
+    },
+    onInputChange(inputText) {
+      this.inputValue = inputText
+      // console.log(SERVER_URL+`/movies/?q=${this.inputValue}`)
+      // console.log(encodeURI(SERVER_URL+`/movies/?q=${this.inputValue}`))
+      axios.get(SERVER_URL+'/movies/', {
+        params: {
+          q: this.inputValue,
+        }
+      })
+        .then(res => { 
+          // res.data.items.forEach(item => {
+          //   const parser = new DOMParser()
+          //   const doc = parser.parseFromString(item.snippet.title, 'text/html')
+          //   item.snippet.title = doc.body.innerText
+          // })
+          this.movies = res.data
+          this.$router.push({ path: 'movies/search', query: { movies: this.movies} })
+        })
+        .catch(err => console.error(err))
     }
   },
   mounted() {

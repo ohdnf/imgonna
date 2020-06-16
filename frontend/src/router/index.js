@@ -11,6 +11,7 @@ import ArticleDetailView from '../views/articles/ArticleDetailView.vue'
 
 import MovieListView from '../views/movies/MovieListView.vue'
 import MovieDetailView from '../views/movies/MovieDetailView.vue'
+import MovieSearchView from '../views/movies/MovieSearchView.vue'
 
 Vue.use(VueRouter)
 
@@ -64,6 +65,12 @@ Vue.use(VueRouter)
     name: 'MovieDetail',
     component: MovieDetailView,
   },
+  {
+    path: '/movies/search/:movies?',
+    name: 'MovieSearch',
+    component: MovieSearchView,
+    props: true
+  }
 ]
 
 const router = new VueRouter({

@@ -1,4 +1,6 @@
 from django.shortcuts import render, get_object_or_404
+from django.db.models import Q
+from urllib.parse import unquote
 from .models import Movie, Rating
 from .serializers import MovieSerializer, MovieListSerializer, RatingSerializer
 
@@ -11,9 +13,13 @@ from rest_framework.decorators import api_view, permission_classes
 @api_view(['GET'])
 def movie_list(request):
     movies = Movie.objects.all()
+    query = request.GET.get("q")
+    if query:
+        unquote(query)
+        movies = movies.filter(Q(title__icontains=query)).distinct()
     serializer = MovieListSerializer(movies, many=True)
     return Response(serializer.data)
-
+    
 @api_view(['GET'])
 def movie_detail(request, movie_pk):
     movie = get_object_or_404(Movie, pk=movie_pk)
