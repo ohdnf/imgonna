@@ -10,6 +10,7 @@ import ArticleListView from '../views/articles/ArticleListView.vue'
 import ArticleDetailView from '../views/articles/ArticleDetailView.vue'
 
 import MovieListView from '../views/movies/MovieListView.vue'
+import MovieDetailView from '../views/movies/MovieDetailView.vue'
 
 Vue.use(VueRouter)
 
@@ -57,6 +58,11 @@ Vue.use(VueRouter)
     path: '/movies',
     name: 'MovieList',
     component: MovieListView,
+  },
+  {
+    path: '/movies/:movieId',
+    name: 'MovieDetail',
+    component: MovieDetailView,
   },
 ]
 

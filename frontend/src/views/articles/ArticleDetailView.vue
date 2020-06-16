@@ -6,8 +6,8 @@
     <b-button @click="backToList">뒤로</b-button>
     <b-button variant="outline-primary" @click="editArticle">수정</b-button>
     <div class="comments-group">
-      <CommentList :comments="article.article_comments" :targetId="article.id"/>
-      <CommentForm :article="article" :targetId="article.id"/>
+      <CommentList :targetId="article.id"/>
+      <CommentForm :targetId="article.id"/>
       <!-- <ul>
         <li :for="comment in this.article.article_comments" v-if="comment">{{ comment }}</li>
       </ul> -->
@@ -31,7 +31,7 @@ export default {
   },
   data() {
     return {
-      article: null
+      article: null,
     }
   },
   methods: {
@@ -57,6 +57,7 @@ export default {
       })
     },
   },
+  
   mounted() {
     this.fetchArticle()
   }

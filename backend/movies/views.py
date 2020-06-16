@@ -20,14 +20,25 @@ def movie_detail(request, movie_pk):
     serializer = MovieSerializer(movie)
     return Response(serializer.data)
 
-@api_view(['POST'])
+@api_view(['GET', 'POST'])
 @permission_classes([IsAuthenticated])
-def rating_create(request, movie_pk):
+def rating_get_create(request, movie_pk):
     movie = get_object_or_404(Movie, pk=movie_pk)
-    serializer = RatingSerializer(data=request.data)
-    if serializer.is_valid(raise_exception=True):
-        serializer.save(user=request.user, movie=movie)  # NOT NULL CONSTRAINT FAILED
+    def rating_get(request, movie_pk):
+        rating = Rating.objects.filter(user=request.user, movie=movie)
+        serializer = RatingSerializer(rating, many=True)
         return Response(serializer.data)
+
+    def rating_create(request, movie_pk):
+        serializer = RatingSerializer(data=request.data)
+        if serializer.is_valid(raise_exception=True):
+            serializer.save(user=request.user, movie=movie)  # NOT NULL CONSTRAINT FAILED
+            return Response(serializer.data)
+
+    if request.method == 'POST':
+        return rating_create(request, movie_pk)
+    else:
+        return rating_get(request, movie_pk)
 
 @api_view(['PUT', 'DELETE'])
 @permission_classes([IsAuthenticated])
@@ -37,8 +48,8 @@ def rating_update_delete(request, movie_pk, rating_pk):
     # 본인 확인
     if request.user == rating.user:
         # 평점 수정
-        if request.method == 'POST':
-            serializer = RatingSerializer(rating, data=request.data)
+        if request.method == 'PUT':
+            serializer = RatingSerializer(instance=rating, data=request.data)
             if serializer.is_valid(raise_exception=True):
                 serializer.save()
                 return Response({'message': '평점이 수정되었습니다.', 'data': serializer.data})

@@ -21,7 +21,6 @@ const SERVER_URL = 'http://localhost:8000'
 export default {
   name: 'CommentForm',
   props: {
-    article: Object,
     targetId: Number,
   },
   data() {
@@ -32,21 +31,21 @@ export default {
     }
   },
   methods: {
-    createComment() {
+    createComment() { 
       const config = {
         headers: {
           Authorization: `Token ${this.$cookies.get('auth-token')}`
         }
       }
-      this.comment.article = this.article
       axios.post(SERVER_URL + `/articles/${this.targetId}/comments/`, this.comment, config)
         .then(res => { 
           console.log(res.data)
+          this.$root.$emit('submit', res.data)
+          this.comment.content = null
         })
         .catch(err => {
           console.error(err)
         })
-      
     },
   },
 }

@@ -79,12 +79,12 @@ def comment_list_create(request, article_pk):
 @api_view(['PUT', 'DELETE'])
 @permission_classes([IsAuthenticated])
 def comment_update_delete(request, article_pk, comment_pk):
-    comment = get_object_or_404(Comment, pk=comment_pk, article_id=article_pk)
+    comment = get_object_or_404(ArticleComment, pk=comment_pk, article_id=article_pk)
 
     # 본인 확인
     if request.user == comment.user:
         # 댓글 수정
-        if request.method == 'POST':
+        if request.method == 'PUT':
             serializer = ArticleCommentSerializer(comment, data=request.data)
             if serializer.is_valid(raise_exception=True):
                 serializer.save()
