@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <NavBar :isLoggedIn="isLoggedIn" @logout="logout"/>
-    <SearchBar @input-change="onInputChange"/>
+    <SearchBar/>
     <router-view class="container mt-4" @submit-login-data="login" @submit-signup-data="signup"/>
   </div>
 </template>
@@ -23,7 +23,6 @@ export default {
     return {
       isLoggedIn: false,
       errorMessages: null,
-      inputValue: '',
       movies: null,
     }
   },
@@ -72,26 +71,6 @@ export default {
           this.$router.push({ name: 'Home' })
         }
     },
-    onInputChange(inputText) {
-      this.inputValue = inputText
-      // console.log(SERVER_URL+`/movies/?q=${this.inputValue}`)
-      // console.log(encodeURI(SERVER_URL+`/movies/?q=${this.inputValue}`))
-      axios.get(SERVER_URL+'/movies/', {
-        params: {
-          q: this.inputValue,
-        }
-      })
-        .then(res => { 
-          // res.data.items.forEach(item => {
-          //   const parser = new DOMParser()
-          //   const doc = parser.parseFromString(item.snippet.title, 'text/html')
-          //   item.snippet.title = doc.body.innerText
-          // })
-          this.movies = res.data
-          this.$router.push({ path: 'movies/search', query: { movies: this.movies} })
-        })
-        .catch(err => console.error(err))
-    }
   },
   mounted() {
     // cookie 에 auth-token 이 존재하는가 체크

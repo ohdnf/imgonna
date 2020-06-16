@@ -1,18 +1,26 @@
 <template>
   <div class="search-bar">
-      <input @keypress.enter="onInput" placeholder="작품 제목을 검색해보세요.">
+      <input v-model="inputValue" @keypress.enter="onInput" placeholder="작품 제목을 검색해보세요.">
+      <!-- <input v-model="inputValue" placeholder="작품 제목을 검색해보세요."> -->
+      <!-- <router-link :to="'movies/search/'+inputValue" tag="button">search</router-link> -->
+      <router-link :to="{name: 'MovieSearch', params: {searchString: inputValue}} " tag="button">search</router-link>
   </div>
 </template>
 
 <script>
+
 export default {
     name: 'SearchBar',
-    methods: {
-        onInput(event) {
-            // emit 1. 위로 커스텀 이벤트를 쏜다.
-            this.$emit('input-change', event.target.value)
+    data() {
+        return {
+            inputValue: ""
         }
     },
+    methods: {
+        onInput() {
+            this.$router.push({ name: 'MovieSearch', params: { searchString: this.inputValue }})
+        }   
+    }
 }
 </script>
 
