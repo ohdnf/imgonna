@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <h1>Home Page</h1>
+    <h1>여기는 메인입니다!!!</h1>
   </div>
 </template>
 

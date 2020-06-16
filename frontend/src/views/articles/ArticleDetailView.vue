@@ -1,44 +1,63 @@
 <template>
   <div class="article-detail-view">
-    <h1>Article Detail</h1>
-    <b-button @click="updateData">수정</b-button>
-    <div class="comments-list">
-      <ul>
-        <li :for="comment in this.articleData.article_comments" v-if="comment">{{ comment }}</li>
-      </ul>
+    <b-card :title="article.title" :sub-title="article.user.username">
+      <b-card-text>{{article.content}}</b-card-text>
+    </b-card>
+    <b-button @click="backToList">뒤로</b-button>
+    <b-button variant="outline-primary" @click="editArticle">수정</b-button>
+    <div class="comments-group">
+      <CommentList :comments="article.article_comments" :targetId="article.id"/>
+      <CommentForm :article="article" :targetId="article.id"/>
+      <!-- <ul>
+        <li :for="comment in this.article.article_comments" v-if="comment">{{ comment }}</li>
+      </ul> -->
     </div>
   </div>
 </template>
 
 <script>
 import axios from 'axios'
+
+import CommentList from '@/components/CommentList.vue'
+import CommentForm from '@/components/CommentForm.vue'
+
 const SERVER_URL = 'http://localhost:8000'
 
 export default {
   name: 'ArticleDetailView',
+  components: {
+    CommentList,
+    CommentForm,
+  },
   data() {
     return {
-      articleData: null
+      article: null
     }
   },
   methods: {
-    fetchArticle() {
-      axios.get(SERVER_URL + `/articles/${this.$route.params.articleId}/`)
-      .then(res => {
-        this.articleData = res.data
-        console.log(res)
-      })
+    backToList() {
+      this.$router.push({ name: 'ArticleList' })
     },
-    updateData() {
+    editArticle() {
       this.$router.push({
         name: 'ArticleForm',
         params: {
-          articleId: this.articleData.id
+          articleId: this.article.id
         }
       })
     },
+    fetchArticle() {
+      axios.get(SERVER_URL + `/articles/${this.$route.params.articleId}/`)
+      .then(res => {
+        this.article = res.data
+        console.log(res)
+      })
+      .catch(err => {
+        console.error(err)
+      })
+    },
   },
-  created() {
+  mounted() {
     this.fetchArticle()
   }
 }

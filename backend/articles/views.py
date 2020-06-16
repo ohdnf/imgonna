@@ -55,14 +55,26 @@ def article_detail_update_delete(request, article_pk):
     else:
         return Response(serializer.errors, status=status.HTTP_401_UNAUTHORIZED)
 
-@api_view(['POST'])
-@permission_classes([IsAuthenticated])
-def comment_create(request, article_pk):
+@api_view(['GET', 'POST'])
+def comment_list_create(request, article_pk):
     article = get_object_or_404(Article, pk=article_pk)
-    serializer = ArticleCommentSerializer(data=request.data)
-    if serializer.is_valid(raise_exception=True):
-        serializer.save(user=request.user, article=article)  # NOT NULL CONSTRAINT FAILED
+
+    def comment_list(request, article_pk):
+        comments = ArticleComment.objects.filter(article_id=article_pk)
+        serializer = ArticleCommentSerializer(comments, many=True)
         return Response(serializer.data)
+
+    @permission_classes([IsAuthenticated])
+    def comment_create(request, article_pk):
+        serializer = ArticleCommentSerializer(data=request.data)
+        if serializer.is_valid(raise_exception=True):
+            serializer.save(user=request.user, article=article)  # NOT NULL CONSTRAINT FAILED
+            return Response(serializer.data)
+
+    if request.method == 'POST':
+        return comment_create(request, article_pk)
+    else:
+        return comment_list(request, article_pk)
 
 @api_view(['PUT', 'DELETE'])
 @permission_classes([IsAuthenticated])

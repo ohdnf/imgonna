@@ -1,19 +1,52 @@
 <template>
   <div>
-    <h1>New Article</h1>
+    <h1>새 글 쓰기</h1>
 
-    <div>
-      <label for="title">title:</label>
-      <b-input v-model="article.title" id="title" type="text" />
-    </div>
-    <div>
-      <label for="content">content:</label>
-      <b-form-textarea v-model="article.content" id="content" cols="30" rows="10"></b-form-textarea>
-    </div>
-    <div>
-      <b-button @click="formMode ? updateArticle() : createArticle()">저장</b-button>&nbsp;
-      <b-button @click="cancel">취소</b-button>
-    </div>
+    <b-form @submit="formMode ? updateArticle() : createArticle()" @cancel="onCancel">
+      <!-- 제목 입력 -->
+      <b-form-group
+        id="title"
+        label="제목"
+        label-for="title-input"
+        description=""
+      >
+        <b-form-input
+          id="title-input"
+          v-model="article.title"
+          type="text"
+          required
+          placeholder="제목을 입력하세요"
+        ></b-form-input>
+      </b-form-group>
+      
+      <!-- 내용 입력 -->
+      <b-form-group
+        id="content"
+        label="내용"
+        label-for="content-input"
+      >
+        <b-form-input
+          id="content-textarea"
+          v-model="article.content"
+          placeholder="내용을 입력하세요"
+          rows="10"
+          max-rows="30"
+        ></b-form-input>
+      </b-form-group>
+
+      <!-- 파일 첨부 -->
+      <b-form-file
+        v-model="file"
+        :state="Boolean(file)"
+        placeholder="Choose a file or drop it here..."
+        drop-placeholder="Drop file here..."
+      ></b-form-file>
+      <div class="mt-3">Selected file: {{ file ? file.name : '' }}</div>
+
+      <!-- 버튼: 저장/취소 -->
+      <b-button type="submit" variant="primary">저장</b-button>&nbsp;
+      <b-button type="cancel">취소</b-button>
+    </b-form>
   </div>
 </template>
 
@@ -32,10 +65,12 @@ export default {
         content: null,
       },
       formMode: this.$route.params.articleId > 0 ? true : false,
-    };
+      // 파일 첨부 추가 구현 필요
+      file: null,
+    }
   },
   methods: {
-    createArticle() {
+    createArticle() { // 생성
       const config = {
         headers: {
           Authorization: `Token ${this.$cookies.get('auth-token')}`
@@ -52,9 +87,9 @@ export default {
             }
           })
         })
-        .catch(err => console.log(err.response.data))
+        .catch(err => console.error(err.response.data))
     },
-    fetchArticle() {
+    fetchArticle() {  // 수정 시 기존 데이터 불러오기
       axios.get(SERVER_URL + `/articles/${this.article.id}`)
         .then(res => {
           this.article.title = res.data.title
@@ -78,12 +113,11 @@ export default {
         })
       })
       .catch(err => {
-        console.log(err.response.data)
+        console.error(err.response.data)
         this.$router.push({ name: 'ArticleList' })
       })
-      
     },
-    cancel() {
+    onCancel() {
       this.$router.push({ name: 'ArticleList' })
     },
     checkLoggedIn() {
@@ -92,7 +126,6 @@ export default {
       }
     }
   },
-
   created() {
     this.checkLoggedIn()
 

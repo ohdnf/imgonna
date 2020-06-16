@@ -1,12 +1,15 @@
 <template>
   <div>
     <h1>Article List</h1>
-    <b-button @click="createArticle">글 생성</b-button>
-    <ul>
-      <li v-for="article in articles" :key="`article_${article.id}`" @click="onArticleClick(article)">
-        {{ article.title }}
-      </li>
-    </ul>
+    <b-button variant="primary" @click="createArticle">글 생성</b-button>
+    <b-list-group>
+      <b-list-group-item button v-for="article in articles" :key="`article_${article.id}`" @click="onArticleClick(article)">
+        <div class="d-flex w-100 justify-content-between">
+          <h5>{{ article.title }}</h5>
+          <small>{{ article.user.username }}</small>
+        </div>
+      </b-list-group-item>
+    </b-list-group>
   </div>
 </template>
 
@@ -25,6 +28,11 @@ export default {
     };
   },
   methods: {
+    createArticle() {
+      this.$router.push({
+        name: 'ArticleForm'
+      })
+    },
     fetchArticles() {
       axios.get(SERVER_URL + "/articles/")
         .then(res => this.articles = res.data)
@@ -38,11 +46,6 @@ export default {
         }
       })
     },
-    createArticle() {
-      this.$router.push({
-        name: 'ArticleForm'
-      })
-    }
   },
   created() {
     this.fetchArticles()
