@@ -9,6 +9,11 @@
         <b-navbar-nav>
           <b-nav-item :to="{ name: 'MovieList' }">영화</b-nav-item>
           <b-nav-item :to="{ name: 'ArticleList' }">자유</b-nav-item>
+        </b-navbar-nav>
+
+        <b-navbar-nav class="ml-auto">
+          <NavSearchBar></NavSearchBar>
+
           <b-nav-item v-if="!isLoggedIn" :to="{ name: 'Login' }">Login</b-nav-item>
           <b-nav-item v-if="!isLoggedIn" :to="{ name: 'Signup' }">Signup</b-nav-item>
           <b-nav-item v-if="isLoggedIn" @click="logout">Logout</b-nav-item>
@@ -19,8 +24,12 @@
 </template>
 
 <script>
+import NavSearchBar from '@/components/NavSearchBar.vue'
 export default {
-  nama: "NavBar",
+  name: "NavBar",
+  components: {
+    NavSearchBar
+  },
   props: {
     isLoggedIn: Boolean,
   },

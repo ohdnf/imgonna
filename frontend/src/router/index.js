@@ -66,11 +66,11 @@ Vue.use(VueRouter)
     component: MovieDetailView,
   },
   {
-    path: '/movies/search/:movies?',
+    path: '/movies/search/:searchString',
     name: 'MovieSearch',
     component: MovieSearchView,
     props: true
-  }
+  } 
 ]
 
 const router = new VueRouter({
