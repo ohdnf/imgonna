@@ -15,7 +15,7 @@
     <div class="credits">
       <h5>출연/제작</h5>
       <ul>
-        <li>{{crews[0].name}}</li>
+        <!-- <li>{{crews[0].name}}</li> -->
         <li v-for="cast in casts.slice(0,4)" :key="`cast_${cast.order}`">{{cast.name}}</li>
       </ul>
     </div>
@@ -79,6 +79,11 @@ export default {
         .then(res => {
           // console.log(res.data)
           this.movie = res.data
+          let temp = []
+          for (let genreId of Object.values(this.movie.genres)) {
+            temp.push(GENRES[genreId])
+          }
+          this.genre = temp
         })
         .catch(err => {
           console.error(err)
@@ -114,15 +119,15 @@ export default {
         })
     },
   },
-  created() {
+  beforeMount() {
     this.fetchMovie()
-    this.getGenre()
+    // this.getGenre()
   },
   mounted() {
     this.getRecommendations()
     this.getSimilarMovies()
     this.getCredits()
-  }
+  },
 }
 </script>
 
