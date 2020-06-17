@@ -32,7 +32,7 @@ export default {
   name: "MovieSearchView",
   data() {
     return {
-      movies: null
+      movies: [],
     }
   },
   props: ['searchString'],

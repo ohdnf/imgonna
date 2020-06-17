@@ -1,7 +1,6 @@
 <template>
   <div id="app">
     <NavBar :isLoggedIn="isLoggedIn" @logout="logout"/>
-    <SearchBar/>
     <router-view class="container mt-4" @submit-login-data="login" @submit-signup-data="signup"/>
   </div>
 </template>
@@ -9,15 +8,14 @@
 <script>
 import axios from 'axios'
 import NavBar from '@/components/NavBar.vue'
-import SearchBar from '@/components/SearchBar.vue'
+
 
 const SERVER_URL = 'http://localhost:8000'
 
 export default {
   name: 'App',
   components: {
-    NavBar,
-    SearchBar
+    NavBar
   },
   data() {
     return {

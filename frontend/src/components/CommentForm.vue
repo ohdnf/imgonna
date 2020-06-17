@@ -5,6 +5,7 @@
         id="content"
         v-model="comment.content"
         placeholder="댓글을 입력하세요"
+        @keypress.enter="createComment"
       ></b-form-input>
       <b-input-group-append>
         <b-button variant="outline-primary" @click="createComment">댓글 입력</b-button>
