@@ -1,11 +1,11 @@
 <template>
   <div class="article-detail-view">
-    <b-card :title="article.title" :sub-title="article.user.username">
+    <b-card :title="article.title" :sub-title="article.user.username" v-if="article">
       <b-card-text>{{article.content}}</b-card-text>
     </b-card>
     <b-button @click="backToList">뒤로</b-button>
     <b-button variant="outline-primary" @click="editArticle">수정</b-button>
-    <div class="comments-group">
+    <div class="comments-group" v-if="article">
       <CommentList :targetId="article.id"/>
       <CommentForm :targetId="article.id"/>
       <!-- <ul>
@@ -50,7 +50,6 @@ export default {
       axios.get(SERVER_URL + `/articles/${this.$route.params.articleId}/`)
       .then(res => {
         this.article = res.data
-        console.log(res)
       })
       .catch(err => {
         console.error(err)

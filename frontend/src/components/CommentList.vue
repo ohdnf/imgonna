@@ -30,7 +30,6 @@ export default {
       axios.get(SERVER_URL + `/articles/${this.targetId}/comments/`)
         .then(res => {
           this.comments = res.data
-          console.log(res)
         })
         .catch(err => console.log(err))
     },
@@ -41,11 +40,11 @@ export default {
         }
       }
       axios.delete(SERVER_URL + `/articles/${this.targetId}/comments/${comment_id}/`, config)
-        .then(res => {
+        .then(() => {
           const idx = this.comments.findIndex(function(item) {return item.id === comment_id})
           if (idx > -1) this.comments.splice(idx, 1)
-          console.log(res)
         })
+        .catch((err) => {console.log(err)})
     }
   },
   mounted() {
