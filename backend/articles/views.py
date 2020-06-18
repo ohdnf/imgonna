@@ -1,6 +1,13 @@
 from django.shortcuts import render, get_object_or_404
+from django.db.models import Q
+from urllib.parse import unquote
 from .models import Article, ArticleComment
+from django.conf import settings
+from django.contrib.auth import get_user_model
+# from accounts.models import User
+
 from .serializers import ArticleSerializer, ArticleListSerializer, ArticleCommentSerializer
+
 
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
@@ -11,7 +18,19 @@ from rest_framework.decorators import api_view, permission_classes
 @api_view(['GET', 'POST'])
 def article_list_create(request):
     def article_list(request):
-        articles = Article.objects.all()
+        articles = Article.objects.order_by('-pk')
+        mode = request.GET.get("selected")
+        query = request.GET.get("searchString")
+        print(query,mode)
+        if mode:
+            if mode=="제목":
+                articles = articles.filter(Q(title__icontains=query)).distinct()
+            elif mode=="내용":
+                articles = articles.filter(Q(content__icontains=query)).distinct()
+            else:
+                User = get_user_model()
+                user = User.objects.filter(username=query)[0]
+                articles = articles.filter(user=user).distinct()
         serializer = ArticleListSerializer(articles, many=True)
         return Response(serializer.data)
 

@@ -1,7 +1,7 @@
 <template>
-  <div>
-    <h1>Article List</h1>
-    <b-button variant="primary" @click="createArticle">글 생성</b-button>
+  <div class="container">
+    <p class="h3 mt-4 py-0">자유게시판</p>
+    <hr class="mb-4 py-0">
 
     <b-table
       id="my-table"
@@ -13,7 +13,9 @@
       small
       @row-clicked="onArticleClick"
     ></b-table>
-
+    <div class="text-right">
+      <b-button variant="primary" @click="createArticle">글 생성</b-button>
+    </div>
     <div class="overflow-auto mt-3">
       <b-pagination
         v-model="currentPage"
@@ -23,10 +25,12 @@
         align="center"
       ></b-pagination>
 
-    
-
-
-      <p class="mt-3">Current Page: {{ currentPage }}</p>
+      <!-- <p class="mt-3">Current Page: {{ currentPage }}</p> -->
+      <b-row align-h="center">
+        <b-col cols="6">
+        <ArticleSearchBar></ArticleSearchBar>
+        </b-col>
+      </b-row>
     </div>
     
     <!-- <b-list-group>
@@ -44,11 +48,14 @@
 
 <script>
 import axios from "axios";
-
+import ArticleSearchBar from '@/components/ArticleSearchBar.vue'
 const SERVER_URL = "http://localhost:8000";
 
 export default {
   name: "ArticleListView",
+  components: {
+    ArticleSearchBar
+  },
   data() {
     return {
       perPage: 10,
@@ -56,9 +63,10 @@ export default {
       articles: [],
       // 홍주표가 지려버린 곳
       fields: [
-        { key: 'id', label: 'ID'},
-        { key: 'title', label: 'Title' },
-        { key: 'user.username', label: 'Username'},
+        { key: 'id', label: '번호'},
+        { key: 'title', label: '제목' },
+        { key: 'user.username', label: '글쓴이'},
+        { key: 'created_at', label: '작성일'}
       ],
     }
   },

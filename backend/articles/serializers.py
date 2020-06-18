@@ -5,15 +5,16 @@ from .models import Article, ArticleComment
 
 class ArticleListSerializer(serializers.ModelSerializer):
     user = UserSerializer()
-
+    created_at = serializers.DateTimeField(format="%Y-%m-%d", required=False)
     class Meta:
         model = Article
-        fields = ('id', 'title', 'user',)
+        fields = ('id', 'title', 'user', 'content','created_at')
 
 
 class ArticleSerializer(serializers.ModelSerializer):
     user = UserSerializer(required=False)   # is_valid()에서 필수여부 검증 PASS
     created_at = serializers.DateTimeField(format="%Y-%m-%d %H:%M:%S", required=False)
+    updated_at = serializers.DateTimeField(format="%Y-%m-%d %H:%M:%S", required=False)
 
     class Meta:
         model = Article

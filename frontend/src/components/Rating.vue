@@ -1,12 +1,11 @@
 <template>
-  <div class="rating">
-
+  <div class="rating d-flex flex-column">
     <!-- !!갓크렉!! https://jsfiddle.net/craig_h_411/992o7cq5/ 외쳐 갓갓!!-->
     <!-- <h2>영화 평점</h2> -->
+    <small>평가하기</small>
     <star-rating :show-rating="false" :star-size="30" v-model="rating" :increment="0.5" @rating-selected="onClickScore"></star-rating>
-    <h5>나의 평점: {{rating}}</h5>
+    <!-- <h5>나의 평점: {{rating}}</h5> -->
   </div>
-  
 </template>
 
 <script>

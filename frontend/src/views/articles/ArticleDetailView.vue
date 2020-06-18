@@ -1,13 +1,18 @@
 <template>
-  <div class="article-detail-view">
-    <b-card :title="article.title" :sub-title="article.user.username" v-if="article">
+  <div class="article-detail-view container">
+    <b-card :title="article.title" :sub-title="'최종 수정: '+article.updated_at" v-if="article" class="my-4">
+      <p class="text-right">작성자: {{article.user.username}}</p>
+      <hr>
       <b-card-text>{{article.content}}</b-card-text>
     </b-card>
-    <b-button @click="backToList">뒤로</b-button>
-    <b-button variant="outline-primary" @click="editArticle">수정</b-button>
+    
+    <div class="text-right">
+      <b-button @click="backToList">뒤로</b-button>
+      <b-button variant="outline-primary" @click="editArticle">수정</b-button>
+    </div>
     <div class="comments-group" v-if="article">
-      <CommentList :targetId="article.id"/>
       <CommentForm :targetId="article.id"/>
+      <CommentList :targetId="article.id"/>
       <!-- <ul>
         <li :for="comment in this.article.article_comments" v-if="comment">{{ comment }}</li>
       </ul> -->

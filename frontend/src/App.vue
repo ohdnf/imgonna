@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <NavBar :isLoggedIn="isLoggedIn" @logout="logout"/>
-    <router-view class="container mt-4" @submit-login-data="login" @submit-signup-data="signup"/>
+    <router-view @submit-login-data="login" @submit-signup-data="signup"/>
   </div>
 </template>
 

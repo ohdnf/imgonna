@@ -24,9 +24,10 @@ export default {
     },
     methods: {
         onInput() {
-            if (this.inputValue!=='') {
-						this.$router.push({ name: 'MovieSearch', params: { searchString: this.inputValue }})
-            }
+          if (this.inputValue!=='') {
+          this.$router.push({ name: 'MovieSearch', params: { searchString: this.inputValue }})
+          this.inputValue=""
+          }
         }   
     }
 }

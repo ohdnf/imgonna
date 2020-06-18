@@ -15,7 +15,9 @@
             tag="article"
             style="max-width: 20rem;"
             class="mb-2"
+            @click="onMovieClick(movie)"
           >
+            <!-- <b-button @click="onMovieClick(movie)" variant="primary">영화 상세보기</b-button> -->
           </b-card>
         </b-col>
       </b-row>
@@ -39,20 +41,22 @@ export default {
   methods: {
     searchMovie() {
       axios.get(SERVER_URL+'/movies/', {params: {q: this.searchString}})
-        .then(res => {this.movies = res.data})
-    }
-  },
-  computed: {
-  msg() {
-    return `Searching for, ${this.searchString}!`;
+        .then(res => {
+          this.movies = res.data
+          })
+    },
+    onMovieClick(movie) {
+      this.$router.push({
+        name: 'MovieDetail',
+        params: {
+          movieId: movie.id
+        }
+      })
     }
   },
   mounted() {
     this.searchMovie()
   },
-  updated() {
-    this.searchMovie()
-  }
 }
 </script>
 

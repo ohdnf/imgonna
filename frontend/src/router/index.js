@@ -4,10 +4,12 @@ import Home from '../views/Home.vue'
 
 import LoginView from '../views/accounts/LoginView.vue'
 import SignupView from '../views/accounts/SignupView.vue'
+import ProfileView from '../views/accounts/ProfileView.vue'
 
 import ArticleFormView from '../views/articles/ArticleFormView.vue'
 import ArticleListView from '../views/articles/ArticleListView.vue'
 import ArticleDetailView from '../views/articles/ArticleDetailView.vue'
+import ArticleSearchView from '../views/articles/ArticleSearchView.vue'
 
 import MovieListView from '../views/movies/MovieListView.vue'
 import MovieDetailView from '../views/movies/MovieDetailView.vue'
@@ -30,6 +32,11 @@ Vue.use(VueRouter)
     path: '/accounts/signup',
     name: 'Signup',
     component: SignupView,
+  },
+  {
+    path: '/accounts/profile',
+    name: 'Profile',
+    component: ProfileView,
   },
   // 자유게시판
   {
@@ -55,6 +62,12 @@ Vue.use(VueRouter)
       }
     }
   },
+  {
+    path: '/articles/search/:selected/:searchString',
+    name: 'ArticleSearch',
+    component: ArticleSearchView,
+    props: true
+  } ,
   {
     path: '/movies',
     name: 'MovieList',

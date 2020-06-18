@@ -1,12 +1,24 @@
 <template>
   <div class="comment-list">
-    <ul>
-      <li :key="`comment_${comment.id}`" v-for="comment in comments">
-        {{comment.user.username}} | {{comment.content}}
-        <b-button variant="primary" size="sm" @click="deleteComment(comment.id)">댓글 삭제</b-button>
+    <hr class="px-0">
+    <ul class="p-2"> 
+      <li class="row" :key="`comment_${comment.id}`" v-for="comment in comments">
+        <div class="col-1 px-0" >
+          {{comment.user.username}}  
+        </div>
+        <div class="col-8 px-0">
+          {{comment.content}}  
+        </div>
+        <div class="col-2 px-0">
+          {{comment.created_at}}  
+        </div>
+        <div class="col-1 px-0">
+          <b-icon icon="x" @click="deleteComment(comment.id)"></b-icon>
+        </div>
         <!-- <b-button variant="primary" @click="createArticle">댓글 수정</b-button> -->
       </li>
     </ul>
+    <hr>
   </div>
 </template>
 
@@ -58,9 +70,12 @@ export default {
 </script>
 
 <style scoped>
-  div.comment-list {
+* {
+  padding: 0px;
+}
+  /* div.comment-list {
     border: 1px solid ddd;
-  }
+  } */
 
   div.comment-list > ul {
     list-style: none;

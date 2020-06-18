@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="container">
     <h1>새 글 쓰기</h1>
 
     <b-form @submit="formMode ? updateArticle() : createArticle()" @cancel="onCancel">
@@ -102,7 +102,7 @@ export default {
           Authorization: `Token ${this.$cookies.get('auth-token')}`
         }
       }
-      axios.put(SERVER_URL + `/articles/${this.article.id}`, this.article, config)
+      axios.put(SERVER_URL + `/articles/${this.article.id}/`, this.article, config)
       .then(res => {
         console.log(res.data)
         this.$router.push({
