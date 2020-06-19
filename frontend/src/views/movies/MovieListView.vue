@@ -1,7 +1,7 @@
 <template>
   <div>
     <h1 class="text-center my-4">영화 목록</h1>
-    <b-container fluid>
+    <b-container class="d-flex justify-content-around">
       <b-row>
         <b-col cols="4" v-for="movie in movies" :key="`movie_${movie.id}`">
           <b-card

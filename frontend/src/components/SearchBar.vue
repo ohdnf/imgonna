@@ -5,11 +5,11 @@
 			<b-input-group-append>
 				<span v-if="inputValue!==''">
 					<router-link :to="{name: 'MovieSearch', params: {searchString: inputValue}} ">
-						<b-button>search</b-button>
+						<b-button>Search</b-button>
 					</router-link>
 				</span>
 				<span v-else>
-					<b-button>search</b-button>
+					<b-button>Search</b-button>
 					<!-- <router-link tag="button">search</router-link> -->
 				</span>
 			</b-input-group-append>

@@ -2,4 +2,4 @@ venv/
 *.pdf
 .env
 __pycache__/
-
+*.json

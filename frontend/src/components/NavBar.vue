@@ -35,7 +35,7 @@
         <b-navbar-nav class="ml-auto">
           <NavSearchBar class="mr-4"></NavSearchBar>
 
-          <b-nav-item-dropdown text="Account" right>
+          <b-nav-item-dropdown text="My Page" right>
             <b-dropdown-item v-if="!isLoggedIn" :to="{ name: 'Login' }">Login</b-dropdown-item>
             <b-dropdown-item v-if="!isLoggedIn" :to="{ name: 'Signup' }">Signup</b-dropdown-item>
             <b-dropdown-item v-if="isLoggedIn" :to="{ name: 'Profile' }">Profile</b-dropdown-item>
