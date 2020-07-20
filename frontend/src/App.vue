@@ -47,7 +47,10 @@ export default {
           console.log(res)
           this.$router.push({ name: 'Home' })
         })
-        .catch(err => this.errorMessages = err.response.data)
+        .catch(err => {
+          this.errorMessages = err.response.data
+          console.log(this.errorMessages)
+        })
     },
 
     logout() {
@@ -57,7 +60,7 @@ export default {
         }
       }
 
-      axios.post(SERVER_URL + '/rest-auth/logout/', null, config)
+      axios.post(SERVER_URL + '/rest-auth/logout/', null, config)  // URL, Body, Header
         // .then(() => {})
         .catch(err => console.error(err.response))
         .finally(() => {
@@ -71,7 +74,7 @@ export default {
     },
   },
   mounted() {
-    // cookie 에 auth-token 이 존재하는가 체크
+    // cookie에 auth-token이 존재하는가 체크
     this.isLoggedIn = this.$cookies.isKey('auth-token')
     // if (this.$cookies.isKey('auth-token')) {
     //   this.isLoggedIn = true

@@ -52,6 +52,7 @@ Vue.use(VueRouter)
   {
     path: '/articles/:articleId?',
     name: 'ArticleForm',
+    // Vue Router의 네비게이션 가드
     component: ArticleFormView,
     beforeEnter(from, to, next) {
       console.log(from, to)
@@ -67,7 +68,7 @@ Vue.use(VueRouter)
     name: 'ArticleSearch',
     component: ArticleSearchView,
     props: true
-  } ,
+  },
   {
     path: '/movies',
     name: 'MovieList',

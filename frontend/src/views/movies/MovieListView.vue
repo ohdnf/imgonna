@@ -3,7 +3,7 @@
     <h1 class="text-center my-4">영화 목록</h1>
     <b-container class="d-flex justify-content-around">
       <b-row>
-        <b-col cols="4" v-for="movie in movies" :key="`movie_${movie.id}`">
+        <b-col cols="4" v-for="movie in movies" :key="`movie_${movie.backdrop_path}`">
           <b-card
             :title="movie.title"
             :img-src="`https://image.tmdb.org/t/p/w500${movie.poster_path}`"
@@ -21,19 +21,21 @@
             <!-- <b-button @click="onMovieClick(movie)" variant="primary">상세 정보</b-button> -->
           </b-card>
         </b-col>
+        <infinite-loading @infinite="infiniteHandler"></infinite-loading>
       </b-row>
     </b-container>
 
-    <div id="bottomSensor"></div>
+    <!-- <div id="bottomSensor"></div> -->
   </div>
 </template>
 
 <script>
 import axios from "axios";
+import InfiniteLoading from 'vue-infinite-loading'
 
-const SERVER_URL = "http://localhost:8000"
-// const TMDB_API_URL = "https://api.themoviedb.org/3"
-// const API_KEY = process.env.VUE_APP_TMDB_API_KEY
+// const SERVER_URL = "http://localhost:8000"
+const TMDB_API_URL = "https://api.themoviedb.org/3"
+const API_KEY = process.env.VUE_APP_TMDB_API_KEY
 // const scrollMonitor = require("scrollmonitor")
 
 export default {
@@ -44,20 +46,23 @@ export default {
       page: 1,
     };
   },
+  components: {
+    InfiniteLoading,
+  },
   methods: {
-    fetchMovies() {
-      axios.get(SERVER_URL + "/movies/")
-        .then(res => this.movies = res.data)
-        .catch(err => console.error(err))
-    },
-    // getPopulars() {
-    //   axios.get(TMDB_API_URL+ `/movie/popular?api_key=${API_KEY}&language=ko-KR&page=${this.page++}`)
-    //     .then(res => {
-    //       // console.log(res.data)
-    //       this.movies = [...this.movies, ...res.data.results]
-    //     })
+    // fetchMovies() {
+    //   axios.get(SERVER_URL + "/movies/")
+    //     .then(res => this.movies = res.data)
     //     .catch(err => console.error(err))
     // },
+    fetchMovies() {
+      axios.get(TMDB_API_URL+ `/movie/popular?api_key=${API_KEY}&language=ko-KR&page=${this.page++}`)
+        .then(res => {
+          // console.log(res.data)
+          this.movies = res.data.results
+        })
+        .catch(err => console.error(err))
+    },
     onMovieClick(movie) {
       this.$router.push({
         name: 'MovieDetail',
@@ -66,32 +71,33 @@ export default {
         }
       })
     },
-    // addScrollWatcher() {
-    //   const bottomSensor = document.querySelector('#bottomSensor')
-    //   const watcher = scrollMonitor.create(bottomSensor)
-    //   watcher.fullyEnterViewport(() => {
-    //     setTimeout(() => {
-    //       this.getPopulars()
-    //     }, 500)
-    //   })
-    // },
-    // loadUntilViewportIsFull() {
-    //   const bottomSensor = document.querySelector('#bottomSensor')
-    //   const watcher = scrollMonitor.create(bottomSensor)
-    //   if (watcher.fullyEnterViewport) {
-    //     this.getPopulars()
-    //   }
-    // },
+    infiniteHandler() {
+      axios.get(TMDB_API_URL+ `/movie/popular?api_key=${API_KEY}&language=ko-KR&page=${this.page++}`)
+        .then(res => {
+          setTimeout( () => {
+            this.movies = this.movies.concat(res.data.results)
+            // console.log(res)
+          // if (res.data.results.length) {
+          //   $state.loaded
+          //   this.page += 1
+          //   if (this.movies.length / 10 == 0) {
+          //     $state.complete()
+          //   }
+          // } else {
+          //   $state.complete()
+          // }
+        }, 1000)
+      })
+      .catch(err => console.error(err))
+    }
   },
   created() {
     this.fetchMovies()
     // this.getPopulars()
   },
   mounted() {
-    // this.addScrollWatcher()
   },
   updated() {
-    // this.loadUntilViewportIsFull()
   },
 };
 </script>

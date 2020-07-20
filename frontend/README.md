@@ -7,6 +7,9 @@ npm install
 
 ### Compiles and hot-reloads for development
 ```
+# tmdb api key is needed
+touch .env.local
+
 npm run serve
 ```
 

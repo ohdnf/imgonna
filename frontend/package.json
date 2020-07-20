@@ -14,7 +14,8 @@
     "scrollmonitor": "^1.2.4",
     "vue": "^2.6.11",
     "vue-cookies": "^1.7.0",
-    "vue-router": "^3.2.0",
+    "vue-infinite-loading": "^2.4.5",
+    "vue-router": "^3.3.4",
     "vue-star-rating": "^1.6.1"
   },
   "devDependencies": {
