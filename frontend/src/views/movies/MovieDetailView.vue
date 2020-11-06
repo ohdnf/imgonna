@@ -100,7 +100,7 @@
 import Rating from '@/components/Rating.vue'
 import axios from 'axios'
 
-const SERVER_URL = 'http://localhost:8000'
+// const SERVER_URL = 'http://localhost:8000'
 const TMDB_URL = 'https://api.themoviedb.org/3'
 const API_KEY = process.env.VUE_APP_TMDB_API_KEY
 const GENRES = {28:"액션",12:"모험",16:"애니메이션",35:"코미디",80:"범죄",99:"다큐멘터리",18:"드라마",10751:"가족",14:"판타지",36:"역사",27:"공포",10402:"음악",9648:"미스터리",10749:"로맨스",878:"SF",10770:"TV 영화",53:"스릴러",10752:"전쟁",37:"서부"}
@@ -125,9 +125,9 @@ export default {
       this.$router.push({ name: 'MovieList' })
     },
     fetchMovie() {
-      axios.get(SERVER_URL + `/movies/${this.$route.params.movieId}/`)
+      axios.get(TMDB_URL + `/movie/${this.$route.params.movieId}?api_key=${API_KEY}&language=ko-KR`)
         .then(res => {
-          // console.log(res.data)
+          console.log(res.data)
           this.movie = res.data
           let temp = []
           for (let genreId of Object.values(this.movie.genres)) {
